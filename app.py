@@ -38,6 +38,7 @@ logger.info(f"Loading base classification model ({BASE_MODEL_NAME})...")
 base_model = BertForSequenceClassification.from_pretrained(BASE_MODEL_NAME, num_labels=2)
 
 logger.info(f"Injecting PEFT LoRA adapter ({PEFT_MODEL_ID})...")
+load_error_msg = None
 try:
     model = PeftModel.from_pretrained(base_model, PEFT_MODEL_ID)
     model.to(device)
@@ -45,6 +46,7 @@ try:
     logger.info("Successfully loaded BERT-LoRA model!")
     is_live_model = True
 except Exception as e:
+    load_error_msg = str(e)
     logger.error(f"Failed to load LoRA adapter directly: {e}")
     model = None
     is_live_model = False
