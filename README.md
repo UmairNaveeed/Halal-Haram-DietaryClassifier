@@ -1,11 +1,23 @@
-# 🛡️ HALAL-BERT: Fine-Tuned BERT-LoRA Dietary Detection System & Web Application
+---
+title: HALAL-BERT Classifier
+emoji: 🛡️
+colorFrom: green
+colorTo: emerald
+sdk: gradio
+sdk_version: 4.44.1
+app_file: app.py
+pinned: false
+license: apache-2.0
+---
+
+# 🛡️ HALAL-BERT: Fine-Tuned BERT-LoRA Dietary Detection System
 
 [![Hugging Face Model](https://img.shields.io/badge/🤗%20Hugging%20Face-Umair1710%2FBert--Lora--Finedtuned--Hala__Haram__Detection-yellow.svg)](https://huggingface.co/Umair1710/Bert-Lora-Finedtuned-Hala_Haram_Detection)
-[![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![Gradio Space](https://img.shields.io/badge/Demo-Gradio%20Space-orange.svg)](https://huggingface.co/spaces)
 [![PyTorch](https://img.shields.io/badge/Framework-PyTorch%20%7C%20PEFT%20LoRA-EE4C2C.svg?logo=pytorch&logoColor=white)](https://pytorch.org)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
-An ultra-modern, recruiter-ready full-stack web application integrating **Umair Naveed's** Parameter-Efficient Fine-Tuned (PEFT) LoRA model on `bert-base-uncased` for fine-grained Halal/Haram food classification.
+An ultra-modern, recruiter-ready dietary classification application powered by **Umair Naveed's** Parameter-Efficient Fine-Tuned (PEFT) LoRA model on `bert-base-uncased`.
 
 Developed as a **Final Year Project (FYP) Core Implementation Engine**.
 
@@ -14,7 +26,7 @@ Developed as a **Final Year Project (FYP) Core Implementation Engine**.
 ## 🌟 Key Features & Capabilities
 
 - **State-of-the-Art Dietary NLP**: Powered by `Umair1710/Bert-Lora-Finedtuned-Hala_Haram_Detection`.
-- **0.98 Haram Recall Benchmark**: Designed specifically with high sensitivity to prohibited dietary triggers (pork derivatives, wine, alcohol, animal shortening, cochineal) with near-zero false-Halal risk.
+- **0.98 Critical Haram Recall Benchmark**: Engineered with high sensitivity to prohibited dietary triggers (pork derivatives, wine, alcohol, animal shortening, cochineal) with near-zero false-Halal risk.
 - **Contextual Counterfactual Nuance**: Understands fine distinctions that collapse naive keyword search (e.g. *raw wine* = **HARAM** vs *white wine vinegar* = **HALAL**; *pork bacon* = **HARAM** vs *soy bacon* = **HALAL**).
 - **Interactive Testing Studio**:
   1. **Single Item Scanner**: Instant natural language inference with animated probability gauge.
@@ -22,7 +34,6 @@ Developed as a **Final Year Project (FYP) Core Implementation Engine**.
   3. **Differential Counterfactual Test Lab**: Side-by-side comparison of trigger words vs contextual negations.
   4. **Recruiter Benchmark Presets**: 1-click test buttons for complex edge cases.
 - **Research & Metrics Showcase**: Live metrics breakdown (95.81% accuracy, 0.9464 Macro F1, 296K active parameters vs 110M frozen base).
-- **Recruiter Report Exporter**: Instant summary generator and raw JSON API inspector.
 
 ---
 
@@ -42,10 +53,6 @@ Evaluated across an uncorrupted, isolated test footprint:
 
 ## 🚀 Quickstart: Running Locally
 
-### Prerequisites
-- Python 3.10+
-- `pip`
-
 ### 1. Install Dependencies
 ```bash
 pip install -r requirements.txt
@@ -53,95 +60,31 @@ pip install -r requirements.txt
 
 ### 2. Launch the Web Application
 ```bash
-./run.sh
-# or
-python3 app.py
+python app.py
 ```
-Open your browser and navigate to:
-```
-http://localhost:7860
-```
-*(Interactive API documentation is available at `http://localhost:7860/docs`)*
+Open your browser and navigate to `http://localhost:7860`.
 
 ---
 
-## 🌐 Deploying to Hugging Face Spaces (Free Live URL for Recruiters)
+## ☁️ Deploying to Hugging Face Spaces (100% Free - No Credit Card Needed)
 
-You can host this entire web app live on Hugging Face Spaces for free with your own URL:
-
-1. **Create a Space**:
-   - Go to [huggingface.co/new-space](https://huggingface.co/new-space).
-   - Enter Space name (e.g. `halal-haram-detector`).
-   - Under **Space SDK**, select **Docker** (Blank template).
-   - Click **Create Space**.
-
-2. **Push the Code**:
-   In your local terminal, initialize git and push to your space:
+1. Go to **[huggingface.co/new-space](https://huggingface.co/new-space)**.
+2. Under **Space Name**, type: `halal-haram-classifier`.
+3. Under **Space SDK**, select **Gradio** (Default Free 16 GB RAM CPU tier).
+4. Click **Create Space**.
+5. Connect your GitHub repository or push via git:
    ```bash
-   git init
-   git remote add space https://huggingface.co/spaces/YOUR_USERNAME/halal-haram-detector
-   git add .
-   git commit -m "Deploy HALAL-BERT Web Application"
+   git remote add space https://huggingface.co/spaces/Umair1710/halal-haram-classifier
    git push space main --force
    ```
-
-3. **Live Web App**:
-   Hugging Face Spaces will automatically build the `Dockerfile` and launch the web app with a permanent link like:
-   `https://huggingface.co/spaces/YOUR_USERNAME/halal-haram-detector`
-
-You can share this live link directly on your resume, LinkedIn, or portfolio for recruiters!
-
----
-
-## 🔌 API Endpoints
-
-### 1. Single Item Classification
-- **Endpoint**: `POST /api/predict`
-- **Request Body**:
-  ```json
-  { "text": "gourmet salad with white wine vinegar" }
-  ```
-- **Response**:
-  ```json
-  {
-    "text": "gourmet salad with white wine vinegar",
-    "prediction": "HALAL",
-    "label_id": 0,
-    "confidence": 99.98,
-    "probabilities": { "halal": 99.98, "haram": 0.02 },
-    "latency_ms": 28.4,
-    "engine": "BERT-LoRA (cpu)"
-  }
-  ```
-
-### 2. Multi-Ingredient Label Audit
-- **Endpoint**: `POST /api/batch-predict`
-- **Request Body**:
-  ```json
-  { "text": "Enriched flour, water, sugar, pork gelatin, salt" }
-  ```
-- **Response**:
-  ```json
-  {
-    "overall_prediction": "HARAM",
-    "overall_confidence": 99.85,
-    "total_ingredients_scanned": 5,
-    "haram_ingredients_detected": 1,
-    "flagged_ingredients": ["pork gelatin (99.85%)"],
-    "ingredient_breakdown": [ ... ]
-  }
-  ```
-
-### 3. Model Telemetry & Benchmarks
-- **Endpoint**: `GET /api/model-info`
+6. Hugging Face will automatically run `python app.py` and provide you with a permanent public link:
+   `https://huggingface.co/spaces/Umair1710/halal-haram-classifier`
 
 ---
 
 ## ✍️ Author & Citation
 
 **Author:** Umair Naveed ([@Umair1710](https://huggingface.co/Umair1710))
-
-If you use this system or dataset methodology in your research, please cite:
 
 ```bibtex
 @misc{umair2026berthelalharam,
