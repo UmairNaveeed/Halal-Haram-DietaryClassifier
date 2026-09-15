@@ -12,15 +12,15 @@ import gradio as gr
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger("halal_bert_gradio")
 
-# Support Hugging Face ZeroGPU
+# Support Hugging Face ZeroGPU startup check
 try:
     import spaces
-    gpu_decorator = spaces.GPU
-    logger.info("Hugging Face Spaces ZeroGPU detected!")
+    @spaces.GPU
+    def _zero_gpu_guard():
+        return True
+    logger.info("Hugging Face Spaces ZeroGPU startup guard registered!")
 except Exception:
-    def gpu_decorator(fn):
-        return fn
-    logger.info("Running in standard environment without ZeroGPU.")
+    pass
 
 # -------------------------------------------------------------
 # Model Initialization
@@ -52,7 +52,6 @@ except Exception as e:
 # -------------------------------------------------------------
 # Inference Helpers
 # -------------------------------------------------------------
-@gpu_decorator
 def predict_single(text: str) -> Dict[str, Any]:
     cleaned = text.strip()
     if not cleaned:
@@ -122,7 +121,6 @@ def parse_ingredients(raw_text: str) -> List[str]:
 # -------------------------------------------------------------
 # Gradio Tab Functions
 # -------------------------------------------------------------
-@gpu_decorator
 def gradio_predict_single(text: str) -> Tuple[str, Dict[str, float], str]:
     if not text or not text.strip():
         return "<div style='color: #f43f5e; padding: 12px;'>Please enter text to classify.</div>", {}, ""
@@ -158,7 +156,6 @@ def gradio_predict_single(text: str) -> Tuple[str, Dict[str, float], str]:
     report_text = f"Input: '{text}' | Verdict: {res['prediction']} ({res['confidence']}%) | Latency: {res['latency_ms']}ms"
     return verdict_html, label_dict, report_text
 
-@gpu_decorator
 def gradio_predict_batch(raw_text: str) -> Tuple[str, List[List[str]]]:
     if not raw_text or not raw_text.strip():
         return "<div style='color: #f43f5e;'>Please enter food ingredients.</div>", []
@@ -194,7 +191,6 @@ def gradio_predict_batch(raw_text: str) -> Tuple[str, List[List[str]]]:
     """
     return header_html, table_rows
 
-@gpu_decorator
 def gradio_predict_cf(text_a: str, text_b: str) -> Tuple[str, str, str]:
     res_a = predict_single(text_a)
     res_b = predict_single(text_b)
